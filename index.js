@@ -1,5 +1,7 @@
 import express from 'express';
 import { engine, create } from 'express-handlebars';
+import AuthRoutes from './routes/auth.js';
+import PoductsRoutes from './routes/products.js';
 // import path, { dirname } from 'path';
 // import { fileURLToPath } from 'url';
 
@@ -20,17 +22,11 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
 
-app.get('/', (req, res) => {
-    // res.send('Main page');
-    // res.sendFile(path.join(__dirname, 'views', 'index.html'));
-    res.render('index');
-});
-
-app.get('/about', (req, res) => {
-    // res.send('About page');
-    // res.sendFile(path.join(__dirname, 'views', 'about.html'));
-    res.render('about');
-});
+// bu use desak qandaydir extra method obj yo func ishlatayotgan bo'lamiz, biz middlewarsni get so'rovdagi callbackfuncdan oldin ham qo'ysak bo'ladi
+//  keyun o'sha so'rovdan oldin ham qo'ysak bo'ladi use dek
+// bu bizlarni middlewarlarimiz
+app.use(AuthRoutes);
+app.use(PoductsRoutes);
 
 const PORT = process.env.PORT || 4100;
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
