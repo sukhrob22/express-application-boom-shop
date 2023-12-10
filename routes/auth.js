@@ -16,4 +16,10 @@ router.get('/register', (req, res) => {
     });
 });
 
+router.post('/login', (req, res) => {
+    console.log(req.body);
+    // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
+    res.redirect('/');
+});
+
 export default router;

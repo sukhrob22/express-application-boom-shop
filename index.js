@@ -21,6 +21,8 @@ const hbs = create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
+// biz ma'lumotni json yo o'zimzi hoxlagan objectga keltirmoqchi bo'lsak shunday foylanamiz
+app.use(express.urlencoded({ extended: true }));
 
 // bu use desak qandaydir extra method obj yo func ishlatayotgan bo'lamiz, biz middlewarsni get so'rovdagi callbackfuncdan oldin ham qo'ysak bo'ladi
 //  keyun o'sha so'rovdan oldin ham qo'ysak bo'ladi use dek
