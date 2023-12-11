@@ -21,6 +21,8 @@ const hbs = create({
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', './views');
+// bu biz ochgan puplic static faylimizni boshqa faylarga bog'lashga yordam beradi
+app.use(express.static('public'));
 // biz ma'lumotni json yo o'zimzi hoxlagan objectga keltirmoqchi bo'lsak shunday foylanamiz
 app.use(express.urlencoded({ extended: true }));
 
