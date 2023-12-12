@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User.js';
+import bcrypt from 'bcrypt';
+
 const router = Router();
 // router bizga get post so'rovlar yuborishiga padeshka qiladi
 
@@ -25,11 +27,13 @@ router.post('/login', (req, res) => {
 
 router.post('/register', async (req, res) => {
     // console.log(req.body); bu oraqli foyldanaluvchi kiritgan ma'lumotlarni consolda ko'ra olsak bo'ladi
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     const userData = {
         firstName: req.body.firstname,
         lastName: req.body.lastname,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
     };
 
     const user = await User.create(userData);
