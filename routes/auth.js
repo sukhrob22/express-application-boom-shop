@@ -9,6 +9,7 @@ router.get('/login', (req, res) => {
     res.render('login', {
         title: ' Login | Suxi',
         isLogin: true,
+        loginError: req.flash('loginError'),
     });
 });
 
@@ -16,24 +17,31 @@ router.get('/register', (req, res) => {
     res.render('register', {
         title: 'Register | Suxi',
         isRegister: true,
+        registerError: req.flash('registerError'),
     });
 });
 
 router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        req.flash('loginError', 'All fields is required');
+        res.redirect('/login');
+        return;
+    }
     // console.log(req.body);
-    const existUser = await User.findOne({ email: req.body.email });
+    const existUser = await User.findOne({ email });
     if (!existUser) {
-        console.log('User not found');
+        req.flash('loginError', 'User not found');
+        res.redirect('/login');
         return;
     }
     // console.log(existUser);
 
-    const isPassEqual = await bcrypt.compare(
-        req.body.password,
-        existUser.password
-    );
+    const isPassEqual = await bcrypt.compare(password, existUser.password);
     if (!isPassEqual) {
-        console.log('Password wrong');
+        req.flash('loginError', 'Password wrong');
+        res.redirect('/login');
         return;
     }
     // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
@@ -41,13 +49,27 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+    const { firstname, lastname, email, password } = req.body;
+
+    if (!firstname || !lastname || !email || !password) {
+        req.flash('registerError', 'All fields is required');
+        res.redirect('/register');
+        return;
+    }
+
+    const condidate = await User.findOne({ email });
+    if (condidate) {
+        req.flash('registerError', 'User already exist');
+        res.redirect('/register');
+        return;
+    }
     // console.log(req.body); bu oraqli foyldanaluvchi kiritgan ma'lumotlarni consolda ko'ra olsak bo'ladi
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const userData = {
-        firstName: req.body.firstname,
-        lastName: req.body.lastname,
-        email: req.body.email,
+        firstName: firstname,
+        lastName: lastname,
+        email: email,
         password: hashedPassword,
     };
 
