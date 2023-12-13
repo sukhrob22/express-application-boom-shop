@@ -19,8 +19,23 @@ router.get('/register', (req, res) => {
     });
 });
 
-router.post('/login', (req, res) => {
-    console.log(req.body);
+router.post('/login', async (req, res) => {
+    // console.log(req.body);
+    const existUser = await User.findOne({ email: req.body.email });
+    if (!existUser) {
+        console.log('User not found');
+        return;
+    }
+    // console.log(existUser);
+
+    const isPassEqual = await bcrypt.compare(
+        req.body.password,
+        existUser.password
+    );
+    if (!isPassEqual) {
+        console.log('Password wrong');
+        return;
+    }
     // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
     res.redirect('/');
 });
