@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import User from '../models/User.js';
 import bcrypt from 'bcrypt';
+import { generateJWTToken } from '../services/token.js';
 
 const router = Router();
 // router bizga get post so'rovlar yuborishiga padeshka qiladi
@@ -44,6 +45,9 @@ router.post('/login', async (req, res) => {
         res.redirect('/login');
         return;
     }
+
+    const token = generateJWTToken(user._id);
+    res.cookie('token', token, { httpOnly: true, secure: true });
     // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
     res.redirect('/');
 });
@@ -74,8 +78,10 @@ router.post('/register', async (req, res) => {
     };
 
     const user = await User.create(userData);
-    console.log(user);
-    // console.log(req.body);
+    // console.log(user);
+    const token = generateJWTToken(user._id);
+    // bu orqali biz jwt tokeni browzerdagi cookiga joylaymiz
+    res.cookie('token', token, { httpOnly: true, secure: true });
     // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
     res.redirect('/');
 });

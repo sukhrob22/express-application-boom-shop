@@ -52,7 +52,7 @@ const startApp = () => {
             {
                 useNewUrlParser: true,
             },
-            () => console.log('Mongo db conntected')
+            () => console.log('Mongo DB conntected')
         );
 
         const PORT = process.env.PORT || 4100;
