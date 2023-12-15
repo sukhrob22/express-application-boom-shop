@@ -6,6 +6,7 @@ router.get('/', (req, res) => {
     // res.sendFile(path.join(__dirname, 'views', 'index.html'));
     res.render('index', {
         title: 'Boom shop | Suxi',
+        token: true,
     });
 });
 

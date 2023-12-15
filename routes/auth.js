@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
         return;
     }
 
-    const token = generateJWTToken(user._id);
+    const token = generateJWTToken(existUser._id);
     res.cookie('token', token, { httpOnly: true, secure: true });
     // bu bosh sahifaga otip yubor degan yani boshqa sahifalarga ham qilsa bo'ladi
     res.redirect('/');

@@ -3,6 +3,8 @@ import { engine, create } from 'express-handlebars';
 import mongoose from 'mongoose';
 import flash from 'connect-flash';
 import session from 'express-session';
+import varMiddleware from './middleware/var.js';
+import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 //Routes
 import AuthRoutes from './routes/auth.js';
@@ -34,8 +36,10 @@ app.use(express.static('public'));
 // biz ma'lumotni json yo o'zimzi hoxlagan objectga keltirmoqchi bo'lsak shunday foylanamiz
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(session({ secret: 'Sammi', resave: false, saveUninitialized: true }));
 app.use(flash());
+app.use(varMiddleware);
 
 // bu use desak qandaydir extra method obj yo func ishlatayotgan bo'lamiz, biz middlewarsni get so'rovdagi callbackfuncdan oldin ham qo'ysak bo'ladi
 //  keyun o'sha so'rovdan oldin ham qo'ysak bo'ladi use dek
