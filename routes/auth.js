@@ -7,6 +7,11 @@ const router = Router();
 // router bizga get post so'rovlar yuborishiga padeshka qiladi
 
 router.get('/login', (req, res) => {
+    if (req.cookies.token) {
+        res.redirect('/');
+        return;
+    }
+
     res.render('login', {
         title: ' Login | Suxi',
         isLogin: true,
@@ -15,11 +20,21 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/register', (req, res) => {
+    if (req.cookies.token) {
+        res.redirect('/');
+        return;
+    }
+
     res.render('register', {
         title: 'Register | Suxi',
         isRegister: true,
         registerError: req.flash('registerError'),
     });
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/');
 });
 
 router.post('/login', async (req, res) => {
