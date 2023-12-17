@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import Product from '../models/Product.js';
 const router = Router();
 
 router.get('/', (req, res) => {
@@ -6,7 +7,6 @@ router.get('/', (req, res) => {
     // res.sendFile(path.join(__dirname, 'views', 'index.html'));
     res.render('index', {
         title: 'Boom shop | Suxi',
-        // token: true,
     });
 });
 
@@ -14,7 +14,6 @@ router.get('/products', (req, res) => {
     res.render('products', {
         title: 'Products | Suxi',
         isProducts: true,
-        // token: true,
     });
 });
 
@@ -22,12 +21,14 @@ router.get('/add', (req, res) => {
     res.render('add', {
         title: 'Add | Suxi',
         isAdd: true,
-        // token: true,
     });
 });
 
-router.post('/add-products', (req, res) => {
-    console.log(req.body);
+router.post('/add-product', async (req, res) => {
+    // console.log(req.body);
+    const { title, description, image, price } = req.body;
+    const products = await Product.create(req.body);
+
     res.redirect('/');
 });
 
