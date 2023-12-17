@@ -7,6 +7,8 @@ const ProductSchema = new Schema(
         image: { type: String, required: true },
         price: { type: Number, required: true },
         user: { type: Schema.Types.ObjectId, ref: 'User' },
+        // bu yerda bunday qilganimiz sababi schema.types.objectId bizga mongodbdagi objectId ni topib beradi va o'sha yerdagi hamma ma'lumotni olib beradi
+        // ref qilib esa qayergani malumotlanri olishini yo'naltiramiz
     },
     { timestamps: true }
 );
