@@ -3,9 +3,13 @@ import { engine, create } from 'express-handlebars';
 import mongoose from 'mongoose';
 import flash from 'connect-flash';
 import session from 'express-session';
-import varMiddleware from './middleware/var.js';
 import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
+
+import varMiddleware from './middleware/var.js';
+import userMiddleware from './middleware/user.js';
+import hbsHelper from './utils/index.js';
+
 //Routes
 import AuthRoutes from './routes/auth.js';
 import PoductsRoutes from './routes/products.js';
@@ -21,9 +25,11 @@ dotenv.config();
 const app = express();
 
 const hbs = create({
-    // bu orqali biz handlebars qilib uzun yozmaymizda o'niga hbs qilib yozib qo'ysak bo'ladi main.handlebars ni o'rniga main.hbs
     defaultLayout: 'main',
     extname: 'hbs',
+    helpers: hbsHelper,
+    // bu orqali biz handlebars qilib uzun yozmaymizda o'niga hbs qilib yozib qo'ysak bo'ladi main.handlebars ni o'rniga main.hbs
+    // / bu helpers methodi bizga har xil conditionlar qo'shishga yordma beradi
 });
 
 // bu 3 qator kod bilan o'zimizning divijogimizni yuklab oldik ya'ni handlebarsni
@@ -40,6 +46,7 @@ app.use(cookieParser());
 app.use(session({ secret: 'Sammi', resave: false, saveUninitialized: true }));
 app.use(flash());
 app.use(varMiddleware);
+app.use(userMiddleware);
 
 // bu use desak qandaydir extra method obj yo func ishlatayotgan bo'lamiz, biz middlewarsni get so'rovdagi callbackfuncdan oldin ham qo'ysak bo'ladi
 //  keyun o'sha so'rovdan oldin ham qo'ysak bo'ladi use dek

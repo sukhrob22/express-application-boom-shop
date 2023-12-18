@@ -13,7 +13,9 @@ router.get('/', async (req, res) => {
     // res.sendFile(path.join(__dirname, 'views', 'index.html'));
     res.render('index', {
         title: 'Boom shop | Suxi',
-        products: products,
+        products: products.reverse(),
+        userId: req.userId ? req.userId.toString() : null,
+        // reverse() method bizga  yangi qo'shilganlarni boshidan qo'yib beradi
     });
 });
 
