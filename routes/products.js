@@ -4,11 +4,16 @@ import authMiddleware from '../middleware/auth.js';
 import userMiddleware from '../middleware/user.js';
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
+    // bu yerdagi find() methodimiz mongodbdagi productning hamma ma'lumotlarni olib beradi
+    // lean degan method bizga kelgan ma'lumotni json farmatga o'girishga yordam beradi
+    const products = await Product.find().lean();
+
     // res.send('Main page');
     // res.sendFile(path.join(__dirname, 'views', 'index.html'));
     res.render('index', {
         title: 'Boom shop | Suxi',
+        products: products,
     });
 });
 
