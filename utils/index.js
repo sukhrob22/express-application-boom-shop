@@ -7,4 +7,8 @@ export default {
         return option.inverse(this);
         // yoki buni atmen qilamiz degani
     },
+
+    getFullNameFirsCharacter(firstName, lastName) {
+        return firstName.charAt(0) + lastName.charAt(0);
+    },
 };
