@@ -85,17 +85,22 @@ router.post('/edit-product/:id', async (req, res) => {
         return;
     }
 
-    const product = await Product.findByIdAndUpdate(id, req.body, {
+    await Product.findByIdAndUpdate(id, req.body, {
         new: true,
     });
-
-    console.log(product);
 
     res.redirect('/products');
 
     // bu yerdagi findByIdAndUpdate() methodmizni agar biz ma'lumotni o'zgartirsak keyin bazaga o'sha o'zgargan ma'lumonti bazaga yangilab beradi
     // unig ichidagi idimiz va yuklagan narsami va new:true bizni configurtsiyami agar buni qilmask bizni o'zgarishimi birinchi o'zgarishda emas keyingi o'zgarishda
     // o'zgaradi agar buni true qilib qo'ysak birdan o'zgaradi
+});
+
+router.post('/delete-product/:id', async (req, res) => {
+    const id = req.params.id;
+
+    await Product.findByIdAndRemove(id);
+    res.redirect('/');
 });
 
 export default router;
