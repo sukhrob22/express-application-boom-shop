@@ -41,6 +41,16 @@ router.get('/add', authMiddleware, (req, res) => {
     });
 });
 
+router.get('/product/:id', async (req, res) => {
+    const id = req.params.id;
+    const product = await Product.findById(id).populate('user').lean();
+
+    res.render('product', {
+        product: product,
+    });
+    // params bizga productdan keyingi idini olib beradi
+});
+
 router.post('/add-product', userMiddleware, async (req, res) => {
     // console.log(req.body);
     const { title, description, image, price } = req.body;
